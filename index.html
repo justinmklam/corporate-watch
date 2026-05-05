@@ -37,10 +37,38 @@
     <hr>
   </main>
   <footer>
+    <p id="corporate-message"></p>
     <p>Fork me on <a href="https://github.com/justinmklam/corporate-watch">GitHub</a>!</p>
   </footer>
 
   <script>
+    const CORPORATE_MESSAGES = [
+      "Let's circle back and touch base offline so we can align our mindsets.",
+      "We need to drill down and synergize our core competencies for maximum stakeholder buy-in.",
+      "Moving forward, let's leverage our learnings and disrupt the paradigm.",
+      "Can you take ownership and run this up the flagpole? I want this championed ASAP.",
+      "Let's put a pin in it, put a bow on it, and revisit during the next sprint.",
+      "We'll socialize this with key stakeholders before we greenlight the deliverables.",
+      "The bandwidth to pivot is literally a low-hanging fruit — let's harvest it.",
+      "Let's unpack that, take it offline, and do a deep dive into the granularity.",
+      "We need to align our KPIs with the broader OKR framework and activate the mission.",
+      "I'll ping you after the stand-up so we can action items all the deliverables together.",
+      "Let's schedule a quick sync to right-size our approach and ideate some magic.",
+      "We should boil the ocean and ideate some blue-sky thinking — no box left unturned.",
+      "The goal is to move the needle on actionable insights and unlock next-level value.",
+      "Let's park this in the parking lot, table it, and circle back when the iron is hot.",
+      "We need to peel the onion and get to the root cause analysis — let's think outside the box.",
+      "Let's create a win-win-win by pushing the envelope on deliverables and crushing it.",
+      "I want to see more proactive thought leadership piped into the pipeline of innovation.",
+      "Let's not boil the ocean fam — just give me the TL;DR executive summary.",
+      "We need to optimize our workflow by streamlining the synergy and hacking the growth.",
+      "Can you double-click on that metric and ping me back before EOD?",
+      "Let's operationalize our learnings, scale the solution, and make the magic happen.",
+      "We should take this conversation to the next level and pivot into Q3 with hustle.",
+      "I'll cascade this down to the team so everyone has visibility and can own their piece.",
+      "Let's incentivize cross-functional collaboration and build a culture of yes, and.",
+      "We need to sunset this legacy process, pivot to agile, and become the change we wish to see.",
+    ];
     const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
@@ -111,6 +139,9 @@
     const localString = `${SHORT_DAYS[now.getDay()]}, ${pad(now.getDate())} ${SHORT_MONTHS[now.getMonth()]} ${now.getFullYear()} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())} ${tzSign}${tzHours}${tzMins}`;
     document.getElementById('subtext').innerHTML =
       `<strong>Corporate coordinates generated <span class="coord-time">${localString}</span></strong>`;
+
+    const idx = Math.floor(Math.random() * CORPORATE_MESSAGES.length);
+    document.getElementById('corporate-message').textContent = CORPORATE_MESSAGES[idx];
   </script>
 </body>
 
