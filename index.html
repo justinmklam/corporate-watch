@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Corporate Watch</title>
+  <style>
+    .highlight {
+      color: magenta;
+    }
+
+    .coord-time {
+      color: green;
+    }
+
+    main {
+      font-size: 1.75rem;
+    }
+
+    #subtext {
+      font-size: 0.6em;
+    }
+
+    footer {
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <p id="line1"></p>
+    <p id="line2"></p>
+    <p id="line3"></p>
+    <p><small id="subtext"></small></p>
+    <hr>
+  </main>
+  <footer>
+    <p>Fork me on <a href="https://github.com/justinmklam/corporate-watch">GitHub</a>!</p>
+  </footer>
+
+  <script>
+    const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+    function pad(n) {return String(n).padStart(2, '0');}
+
+    function formatDate(date) {
+      return `${DAYS[date.getDay()]}, ${pad(date.getDate())} ${MONTHS[date.getMonth()]}`;
+    }
+
+    function getQuarterInfo() {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = now.getMonth();
+
+      let quarterNum, quarterStart, quarterEnd;
+      if (month < 3) {
+        quarterNum = 1;
+        quarterStart = new Date(year, 0, 1);
+        quarterEnd = new Date(year, 2, 31);
+      } else if (month < 6) {
+        quarterNum = 2;
+        quarterStart = new Date(year, 3, 1);
+        quarterEnd = new Date(year, 5, 30);
+      } else if (month < 9) {
+        quarterNum = 3;
+        quarterStart = new Date(year, 6, 1);
+        quarterEnd = new Date(year, 8, 30);
+      } else {
+        quarterNum = 4;
+        quarterStart = new Date(year, 9, 1);
+        quarterEnd = new Date(year, 11, 31);
+      }
+
+      const MS_PER_DAY = 86400000;
+      const today = new Date(year, month, now.getDate());
+      const totalDays = (quarterEnd - quarterStart) / MS_PER_DAY;
+      const daysElapsed = (today - quarterStart) / MS_PER_DAY;
+      const daysRemaining = totalDays - daysElapsed;
+      const weeksElapsed = Math.floor(daysElapsed / 7);
+      const totalWeeks = Math.round(totalDays / 7);
+      const pctRemaining = ((daysRemaining / totalDays) * 100).toFixed(2);
+
+      return {quarterNum, year, quarterStart, quarterEnd, weeksElapsed, totalWeeks, daysRemaining, pctRemaining};
+    }
+
+    function h(text) {
+      return `<span class="highlight">${text}</span>`;
+    }
+
+    const q = getQuarterInfo();
+    const now = new Date();
+
+    document.getElementById('line1').innerHTML =
+      `<strong>We are ${h(q.weeksElapsed + ' weeks')} into ${h('Q' + q.quarterNum + ', ' + q.year)} (${h('week ' + q.weeksElapsed + ' of ' + q.totalWeeks)})</strong>`;
+
+    document.getElementById('line2').innerHTML =
+      `<strong>The quarter started ${h(formatDate(q.quarterStart))} and will end ${h(formatDate(q.quarterEnd))} (each quarter is ${h('~' + q.totalWeeks)} weeks)</strong>`;
+
+    document.getElementById('line3').innerHTML =
+      `<strong>There are ${h(q.daysRemaining)} calendar days until the end of the quarter (${h(q.pctRemaining + '%')} to go)</strong>`;
+
+    const SHORT_DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    const SHORT_MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const tzOffset = -now.getTimezoneOffset();
+    const tzSign = tzOffset >= 0 ? '+' : '-';
+    const tzHours = pad(Math.floor(Math.abs(tzOffset) / 60));
+    const tzMins = pad(Math.abs(tzOffset) % 60);
+    const localString = `${SHORT_DAYS[now.getDay()]}, ${pad(now.getDate())} ${SHORT_MONTHS[now.getMonth()]} ${now.getFullYear()} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())} ${tzSign}${tzHours}${tzMins}`;
+    document.getElementById('subtext').innerHTML =
+      `<strong>Corporate coordinates generated <span class="coord-time">${localString}</span></strong>`;
+  </script>
+</body>
+
+</html>
