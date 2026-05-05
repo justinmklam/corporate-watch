@@ -111,7 +111,7 @@
       const totalWeeks = Math.round(totalDays / 7);
       const pctRemaining = ((daysRemaining / totalDays) * 100).toFixed(2);
 
-      return {quarterNum, year, quarterStart, quarterEnd, weeksElapsed, totalWeeks, daysRemaining, pctRemaining};
+      return {quarterNum, year, quarterStart, quarterEnd, weeksElapsed, totalWeeks, daysRemaining, pctRemaining, half: quarterNum <= 2 ? 'H1' : 'H2'};
     }
 
     function h(text) {
@@ -122,7 +122,7 @@
     const now = new Date();
 
     document.getElementById('line1').innerHTML =
-      `<strong>We are ${h(q.weeksElapsed + ' weeks')} into ${h('Q' + q.quarterNum + ', ' + q.year)} (${h('week ' + (q.weeksElapsed + 1) + ' of ' + q.totalWeeks + ', ' + (q.totalWeeks - q.weeksElapsed) + ' weeks remaining')})</strong>`;
+      `<strong>We are ${h(q.weeksElapsed + ' weeks')} into ${h('Q' + q.quarterNum + ', ' + q.year)} (${h('week ' + (q.weeksElapsed + 1) + ' of ' + q.totalWeeks + ', ' + (q.totalWeeks - q.weeksElapsed) + ' weeks remaining')}), currently in ${h(q.half)}</strong>`;
 
     document.getElementById('line2').innerHTML =
       `<strong>The quarter started ${h(formatDate(q.quarterStart))} and will end ${h(formatDate(q.quarterEnd))} (each quarter is ${h('~' + q.totalWeeks)} weeks)</strong>`;
