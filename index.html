@@ -122,7 +122,7 @@
     const now = new Date();
 
     document.getElementById('line1').innerHTML =
-      `<strong>We are ${h(q.weeksElapsed + ' weeks')} into ${h('Q' + q.quarterNum + ', ' + q.year)} (${h('week ' + q.weeksElapsed + ' of ' + q.totalWeeks)})</strong>`;
+      `<strong>We are ${h(q.weeksElapsed + ' weeks')} into ${h('Q' + q.quarterNum + ', ' + q.year)} (${h('week ' + (q.weeksElapsed + 1) + ' of ' + q.totalWeeks + ', ' + (q.totalWeeks - q.weeksElapsed) + ' weeks remaining')})</strong>`;
 
     document.getElementById('line2').innerHTML =
       `<strong>The quarter started ${h(formatDate(q.quarterStart))} and will end ${h(formatDate(q.quarterEnd))} (each quarter is ${h('~' + q.totalWeeks)} weeks)</strong>`;
