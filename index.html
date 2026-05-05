@@ -33,6 +33,7 @@
     <p id="line1"></p>
     <p id="line2"></p>
     <p id="line3"></p>
+    <p id="line4"></p>
     <p><small id="subtext"></small></p>
     <hr>
   </main>
@@ -111,7 +112,16 @@
       const totalWeeks = Math.round(totalDays / 7);
       const pctRemaining = ((daysRemaining / totalDays) * 100).toFixed(2);
 
-      return {quarterNum, year, quarterStart, quarterEnd, weeksElapsed, totalWeeks, daysRemaining, pctRemaining, half: quarterNum <= 2 ? 'H1' : 'H2'};
+      const nextQuarterNum = quarterNum % 4 + 1;
+      const nextQuarterYear = quarterNum === 4 ? year + 1 : year;
+      const nextQuarterStart = new Date(quarterEnd.getTime() + MS_PER_DAY);
+      let nextQuarterEnd;
+      if (nextQuarterNum === 1) nextQuarterEnd = new Date(nextQuarterYear, 2, 31);
+      else if (nextQuarterNum === 2) nextQuarterEnd = new Date(nextQuarterYear, 5, 30);
+      else if (nextQuarterNum === 3) nextQuarterEnd = new Date(nextQuarterYear, 8, 30);
+      else nextQuarterEnd = new Date(nextQuarterYear, 11, 31);
+
+      return {quarterNum, year, quarterStart, quarterEnd, weeksElapsed, totalWeeks, daysRemaining, pctRemaining, half: quarterNum <= 2 ? 'H1' : 'H2', nextQuarterNum, nextQuarterStart, nextQuarterEnd};
     }
 
     function h(text) {
@@ -137,6 +147,9 @@
     const tzHours = pad(Math.floor(Math.abs(tzOffset) / 60));
     const tzMins = pad(Math.abs(tzOffset) % 60);
     const localString = `${SHORT_DAYS[now.getDay()]}, ${pad(now.getDate())} ${SHORT_MONTHS[now.getMonth()]} ${now.getFullYear()} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())} ${tzSign}${tzHours}${tzMins}`;
+    document.getElementById('line4').innerHTML =
+      `<strong>The next quarter starts ${h(formatDate(q.nextQuarterStart))} and will end ${h(formatDate(q.nextQuarterEnd))}</strong>`;
+
     document.getElementById('subtext').innerHTML =
       `<strong>Corporate coordinates generated <span class="coord-time">${localString}</span></strong>`;
 
